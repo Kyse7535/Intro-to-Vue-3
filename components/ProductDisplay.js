@@ -3,6 +3,10 @@ app.component('product-display', {
         premium: {
             type: Boolean,
             required: true
+        },
+        emptyCard: {
+            type: Boolean,
+            required: true
         }
     },
     template:
@@ -29,6 +33,7 @@ app.component('product-display', {
             </div>
             
             <button class="button" :class="{ disabledButton: !inStock }" :disabled="!inStock" v-on:click="addToCart">Add to Cart</button>
+            <button class="button" :class="{disabledButton: emptyCard}" :disabled="emptyCard" v-on:click="removeCard">remove product</button>
           </div>
         </div>
       </div>`,
@@ -46,10 +51,13 @@ app.component('product-display', {
     },
     methods: {
         addToCart() {
-            this.cart += 1
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
         },
         updateVariant(index) {
             this.selectedVariant = index
+        },
+        removeCard() {
+            this.$emit('remove-to-cart', this.variants[this.selectedVariant].id)
         }
     },
     computed: {
